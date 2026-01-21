@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SaveYourNote.Api/SaveYourNote.Api.csproj" />
+  </Folder>
+</Solution>
