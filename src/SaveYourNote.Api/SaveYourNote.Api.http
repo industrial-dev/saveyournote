@@ -1,0 +1,162 @@
+### SaveYourNote API - Tests
+
+@baseUrl = http://localhost:5000
+@prodUrl = https://localhost
+
+###
+# Health Check
+GET {{baseUrl}}/health
+Accept: application/json
+
+###
+# WhatsApp Webhook Verification (GET)
+# Meta enviará esta petición para verificar tu webhook
+GET {{baseUrl}}/api/whatsapp?hub.mode=subscribe&hub.verify_token=dev_verify_token_12345&hub.challenge=test_challenge_123
+Accept: application/json
+
+###
+# WhatsApp Webhook Verification - Token Incorrecto (debe fallar)
+GET {{baseUrl}}/api/whatsapp?hub.mode=subscribe&hub.verify_token=wrong_token&hub.challenge=test_challenge_123
+Accept: application/json
+
+###
+# Test Webhook - Mensaje de Texto
+POST {{baseUrl}}/api/whatsapp
+Content-Type: application/json
+
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "123456789",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "+1234567890",
+              "phone_number_id": "123456"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "Juan Pérez"
+                },
+                "wa_id": "+5491112345678"
+              }
+            ],
+            "messages": [
+              {
+                "from": "+5491112345678",
+                "id": "wamid.HBgNNTQ5MTE2MTk4MDcyNhUCABIYFjNFQjBDRjQxN0YwODhGQzJGOTQzMjMA",
+                "timestamp": "1702934400",
+                "type": "text",
+                "text": {
+                  "body": "Hola! Este es un mensaje de prueba 👋"
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}
+
+###
+# Test Webhook - Mensaje con Imagen
+POST {{baseUrl}}/api/whatsapp
+Content-Type: application/json
+
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "123456789",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "+1234567890",
+              "phone_number_id": "123456"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "María García"
+                },
+                "wa_id": "+5491187654321"
+              }
+            ],
+            "messages": [
+              {
+                "from": "+5491187654321",
+                "id": "wamid.IMAGE123456",
+                "timestamp": "1702934500",
+                "type": "image",
+                "image": {
+                  "caption": "Mira esta imagen!",
+                  "mime_type": "image/jpeg",
+                  "sha256": "abc123def456",
+                  "id": "img_12345"
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}
+
+###
+# Test Webhook - Ubicación
+POST {{baseUrl}}/api/whatsapp
+Content-Type: application/json
+
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "123456789",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "+1234567890",
+              "phone_number_id": "123456"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "Ana Martínez"
+                },
+                "wa_id": "+5491199998888"
+              }
+            ],
+            "messages": [
+              {
+                "from": "+5491199998888",
+                "id": "wamid.LOCATION123456",
+                "timestamp": "1702934700",
+                "type": "location",
+                "location": {
+                  "latitude": -34.603722,
+                  "longitude": -58.381592,
+                  "name": "Obelisco de Buenos Aires",
+                  "address": "Av. 9 de Julio, Buenos Aires, Argentina"
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}
+

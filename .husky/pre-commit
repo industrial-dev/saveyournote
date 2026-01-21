@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Ejecutar el script de Node.js (multiplataforma)
+node .husky/pre-commit.js

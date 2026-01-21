@@ -1,0 +1,23 @@
+{
+  "name": "saveyornote",
+  "version": "1.0.0",
+  "description": "SaveYourNote API - Sistema inteligente de notas via WhatsApp",
+  "scripts": {
+    "prepare": "husky",
+    "dev": "node dev-commands.js",
+    "start": "node dev-commands.js start-api",
+    "format": "dotnet csharpier format .",
+    "format:check": "dotnet csharpier check .",
+    "clean": "dotnet clean",
+    "build": "dotnet build",
+    "test": "dotnet test",
+    "restore": "dotnet restore && dotnet tool restore",
+    "docker:up": "docker-compose up --build",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "pre-commit": "node .husky/pre-commit.js"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

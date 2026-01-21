@@ -38,6 +38,86 @@ Facilitar el almacenamiento rápido y organizado de información desde WhatsApp,
 
 ---
 
+## 🚀 Inicio Rápido
+
+### Requisitos Previos
+
+- Node.js 18+ (para scripts de desarrollo)
+- .NET SDK 10.0
+- Docker y Docker Compose (opcional, para despliegue)
+- Git
+
+### Instalación
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/industrial-dev/saveyournote.git
+cd saveyournote
+
+# 2. Instalar dependencias de Node.js
+npm install
+
+# 3. Restaurar dependencias de .NET
+npm run restore
+```
+
+### Comandos de Desarrollo
+
+El proyecto incluye un sistema de comandos multiplataforma (Windows, Mac, Linux):
+
+```bash
+# Ver todos los comandos disponibles
+npm run dev
+
+# Iniciar la API en modo desarrollo
+npm start
+
+# Compilar el proyecto
+npm run build
+
+# Formatear código
+npm run format
+
+# Ejecutar con Docker
+npm run docker:up
+```
+
+Para más detalles, consulta [DEV_COMMANDS.md](./DEV_COMMANDS.md)
+
+### Desarrollo Local
+
+1. **Iniciar la API:**
+
+   ```bash
+   npm start
+   ```
+
+   La API estará disponible en `http://localhost:5000`
+
+2. **Verificar salud de la API:**
+
+   ```bash
+   curl http://localhost:5000/health
+   ```
+
+3. **Probar el webhook de WhatsApp:**
+   Usa el archivo `src/SaveYourNote.Api/SaveYourNote.Api.http` en VS Code con la extensión REST Client
+
+### Desarrollo con Docker
+
+```bash
+# Iniciar todos los servicios
+npm run docker:up
+
+# Ver logs
+npm run docker:logs
+
+# Detener servicios
+npm run docker:down
+```
+
+---
+
 ## Stack Tecnológico
 
 ### Backend y API
