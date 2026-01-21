@@ -1,0 +1,5 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+## --group means to run all tasks assigned to the "pre-commit" group
+dotnet husky run --group pre-commit
