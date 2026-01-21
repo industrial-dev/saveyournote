@@ -54,13 +54,17 @@ public static class WhatsAppMessageMapper
         {
             "text" => MapTextMessage(whatsAppMessage, timestamp),
             "audio" => MapAudioMessage(whatsAppMessage, timestamp),
-            _ => Error.Validation("WhatsApp.UnsupportedType", $"Unsupported message type: {whatsAppMessage.Type}")
+            _ => Error.Validation(
+                "WhatsApp.UnsupportedType",
+                $"Unsupported message type: {whatsAppMessage.Type}"
+            ),
         };
     }
 
     private static ErrorOr<ProcessMessageCommand> MapTextMessage(
         WhatsAppMessageDto whatsAppMessage,
-        DateTime timestamp)
+        DateTime timestamp
+    )
     {
         if (whatsAppMessage.Text is null || string.IsNullOrWhiteSpace(whatsAppMessage.Text.Body))
         {
@@ -79,7 +83,8 @@ public static class WhatsAppMessageMapper
 
     private static ErrorOr<ProcessMessageCommand> MapAudioMessage(
         WhatsAppMessageDto whatsAppMessage,
-        DateTime timestamp)
+        DateTime timestamp
+    )
     {
         if (whatsAppMessage.Audio is null)
         {

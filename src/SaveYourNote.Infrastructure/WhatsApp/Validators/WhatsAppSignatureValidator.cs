@@ -1,6 +1,6 @@
-using ErrorOr;
 using System.Security.Cryptography;
 using System.Text;
+using ErrorOr;
 
 namespace SaveYourNote.Infrastructure.WhatsApp.Validators;
 
@@ -19,27 +19,25 @@ public static class WhatsAppSignatureValidator
     public static ErrorOr<Success> ValidateSignature(
         string payload,
         string? signature,
-        string appSecret)
+        string appSecret
+    )
     {
         if (string.IsNullOrWhiteSpace(payload))
         {
-            return Error.Validation(
-                "WhatsApp.EmptyPayload",
-                "Request payload is empty");
+            return Error.Validation("WhatsApp.EmptyPayload", "Request payload is empty");
         }
 
         if (string.IsNullOrWhiteSpace(signature))
         {
             return Error.Validation(
                 "WhatsApp.MissingSignature",
-                "X-Hub-Signature-256 header is missing");
+                "X-Hub-Signature-256 header is missing"
+            );
         }
 
         if (string.IsNullOrWhiteSpace(appSecret))
         {
-            return Error.Failure(
-                "WhatsApp.MissingSecret",
-                "WhatsApp app secret is not configured");
+            return Error.Failure("WhatsApp.MissingSecret", "WhatsApp app secret is not configured");
         }
 
         // Remove 'sha256=' prefix if present
@@ -55,7 +53,8 @@ public static class WhatsAppSignatureValidator
         {
             return Error.Validation(
                 "WhatsApp.InvalidSignature",
-                "Webhook signature validation failed");
+                "Webhook signature validation failed"
+            );
         }
 
         return Result.Success;
@@ -68,7 +67,7 @@ public static class WhatsAppSignatureValidator
 
         using var hmac = new HMACSHA256(keyBytes);
         var hashBytes = hmac.ComputeHash(payloadBytes);
-        
+
         return Convert.ToHexString(hashBytes).ToLowerInvariant();
     }
 

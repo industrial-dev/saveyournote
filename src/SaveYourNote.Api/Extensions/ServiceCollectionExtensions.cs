@@ -16,7 +16,7 @@ public static class ServiceCollectionExtensions
     {
         // Register application services
         services.AddScoped<IMessageService, ProcessMessageHandler>();
-        
+
         // Register infrastructure services
         services.AddSingleton<IMessageLogger, ConsoleMessageLogger>();
 
@@ -32,9 +32,7 @@ public static class ServiceCollectionExtensions
         {
             options.AddDefaultPolicy(builder =>
             {
-                builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
             });
         });
 

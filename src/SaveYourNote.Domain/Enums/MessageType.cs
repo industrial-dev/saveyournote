@@ -13,5 +13,5 @@ public enum MessageType
     /// <summary>
     /// Audio message
     /// </summary>
-    Audio
+    Audio,
 }

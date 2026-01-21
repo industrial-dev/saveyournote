@@ -31,7 +31,7 @@ public sealed record TextContent
 
         // Trim and normalize whitespace
         var normalized = value.Trim();
-        
+
         return new TextContent(normalized);
     }
 

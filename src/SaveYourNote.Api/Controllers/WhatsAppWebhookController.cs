@@ -1,10 +1,10 @@
+using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using SaveYourNote.Application.Interfaces;
 using SaveYourNote.Infrastructure.WhatsApp.DTOs;
 using SaveYourNote.Infrastructure.WhatsApp.Mappers;
 using SaveYourNote.Infrastructure.WhatsApp.Validators;
-using System.Text;
-using System.Text.Json;
 
 namespace SaveYourNote.Api.Controllers;
 
@@ -23,7 +23,8 @@ public class WhatsAppWebhookController : ControllerBase
     public WhatsAppWebhookController(
         IMessageService messageService,
         IConfiguration configuration,
-        ILogger<WhatsAppWebhookController> logger)
+        ILogger<WhatsAppWebhookController> logger
+    )
     {
         _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -37,7 +38,8 @@ public class WhatsAppWebhookController : ControllerBase
     public IActionResult VerifyWebhook(
         [FromQuery(Name = "hub.mode")] string? mode,
         [FromQuery(Name = "hub.verify_token")] string? verifyToken,
-        [FromQuery(Name = "hub.challenge")] string? challenge)
+        [FromQuery(Name = "hub.challenge")] string? challenge
+    )
     {
         _logger.LogInformation("Webhook verification request received");
 
@@ -82,12 +84,15 @@ public class WhatsAppWebhookController : ControllerBase
                 var validationResult = WhatsAppSignatureValidator.ValidateSignature(
                     rawBody,
                     signature,
-                    appSecret);
+                    appSecret
+                );
 
                 if (validationResult.IsError)
                 {
-                    _logger.LogWarning("Signature validation failed: {Error}",
-                        validationResult.FirstError.Description);
+                    _logger.LogWarning(
+                        "Signature validation failed: {Error}",
+                        validationResult.FirstError.Description
+                    );
                     return BadRequest(new { error = "Invalid signature" });
                 }
             }
@@ -95,7 +100,8 @@ public class WhatsAppWebhookController : ControllerBase
             // Deserialize webhook payload
             var webhookDto = JsonSerializer.Deserialize<WhatsAppWebhookDto>(
                 rawBody,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            );
 
             if (webhookDto is null)
             {
@@ -107,8 +113,10 @@ public class WhatsAppWebhookController : ControllerBase
             var commandResult = WhatsAppMessageMapper.ToCommand(webhookDto);
             if (commandResult.IsError)
             {
-                _logger.LogWarning("Failed to map webhook to command: {Error}",
-                    commandResult.FirstError.Description);
+                _logger.LogWarning(
+                    "Failed to map webhook to command: {Error}",
+                    commandResult.FirstError.Description
+                );
                 return BadRequest(new { error = commandResult.FirstError.Description });
             }
 
@@ -117,24 +125,33 @@ public class WhatsAppWebhookController : ControllerBase
 
             if (result.IsError)
             {
-                _logger.LogError("Failed to process message: {Error}",
-                    result.FirstError.Description);
-                return StatusCode(500, new
-                {
-                    error = "Failed to process message",
-                    details = result.FirstError.Description
-                });
+                _logger.LogError(
+                    "Failed to process message: {Error}",
+                    result.FirstError.Description
+                );
+                return StatusCode(
+                    500,
+                    new
+                    {
+                        error = "Failed to process message",
+                        details = result.FirstError.Description,
+                    }
+                );
             }
 
-            _logger.LogInformation("Message processed successfully: {MessageId}",
-                result.Value.MessageId);
+            _logger.LogInformation(
+                "Message processed successfully: {MessageId}",
+                result.Value.MessageId
+            );
 
-            return Ok(new
-            {
-                status = "success",
-                message = "Message received and logged",
-                data = result.Value
-            });
+            return Ok(
+                new
+                {
+                    status = "success",
+                    message = "Message received and logged",
+                    data = result.Value,
+                }
+            );
         }
         catch (Exception ex)
         {

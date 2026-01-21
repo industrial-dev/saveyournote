@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <ItemGroup>
     <ProjectReference Include="..\SaveYourNote.Domain\SaveYourNote.Domain.csproj" />
     <ProjectReference Include="..\SaveYourNote.Application\SaveYourNote.Application.csproj" />
@@ -14,5 +13,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
 </Project>

@@ -37,11 +37,17 @@ app.UseCors();
 app.MapControllers();
 
 // Add a simple health check endpoint
-app.MapGet("/health", () => Results.Ok(new
-{
-    status = "healthy",
-    timestamp = DateTime.UtcNow,
-    service = "SaveYourNote API"
-}));
+app.MapGet(
+    "/health",
+    () =>
+        Results.Ok(
+            new
+            {
+                status = "healthy",
+                timestamp = DateTime.UtcNow,
+                service = "SaveYourNote API",
+            }
+        )
+);
 
 app.Run();

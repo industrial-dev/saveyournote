@@ -26,7 +26,8 @@ public sealed class ProcessMessageHandler : IMessageService
     /// </summary>
     public async Task<ErrorOr<MessageDto>> ProcessMessageAsync(
         ProcessMessageCommand command,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         // 1. Validate command
         if (command is null)
@@ -76,14 +77,15 @@ public sealed class ProcessMessageHandler : IMessageService
         {
             MessageType.Text => CreateTextMessage(messageId, senderId, command),
             MessageType.Audio => CreateAudioMessage(messageId, senderId, command),
-            _ => null
+            _ => null,
         };
     }
 
     private static Message? CreateTextMessage(
         MessageId messageId,
         SenderId senderId,
-        ProcessMessageCommand command)
+        ProcessMessageCommand command
+    )
     {
         var textContent = TextContent.Create(command.Content);
         if (textContent is null)
@@ -96,13 +98,15 @@ public sealed class ProcessMessageHandler : IMessageService
             senderId,
             command.Source,
             command.Timestamp,
-            textContent);
+            textContent
+        );
     }
 
     private static Message? CreateAudioMessage(
         MessageId messageId,
         SenderId senderId,
-        ProcessMessageCommand command)
+        ProcessMessageCommand command
+    )
     {
         if (string.IsNullOrWhiteSpace(command.AudioMimeType))
         {
@@ -112,7 +116,8 @@ public sealed class ProcessMessageHandler : IMessageService
         var audioContent = AudioContent.Create(
             command.Content, // Content is the audio ID for audio messages
             command.AudioMimeType,
-            command.AudioSha256);
+            command.AudioSha256
+        );
 
         if (audioContent is null)
         {
@@ -124,7 +129,8 @@ public sealed class ProcessMessageHandler : IMessageService
             senderId,
             command.Source,
             command.Timestamp,
-            audioContent);
+            audioContent
+        );
     }
 
     private static MessageDto MapToDto(Message message)
@@ -135,6 +141,7 @@ public sealed class ProcessMessageHandler : IMessageService
             message.GetContentDisplay(),
             message.Type,
             message.Source,
-            message.Timestamp);
+            message.Timestamp
+        );
     }
 }
