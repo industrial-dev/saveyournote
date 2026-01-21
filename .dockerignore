@@ -1,0 +1,17 @@
+**/.bin/
+**/.obj/
+**/bin/
+**/obj/
+.git/
+.github/
+.vs/
+.vscode/
+*.sln
+*.user
+node_modules/
+npm-debug.log
+docker-compose.yml
+docker-compose.override.yml
+README.md
+DOCKER_GUIDE.md
+PHASE1_README.md
