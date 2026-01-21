@@ -38,9 +38,7 @@ public sealed record WhatsAppContactDto(
     [property: JsonPropertyName("wa_id")] string WaId
 );
 
-public sealed record WhatsAppProfileDto(
-    [property: JsonPropertyName("name")] string Name
-);
+public sealed record WhatsAppProfileDto([property: JsonPropertyName("name")] string Name);
 
 public sealed record WhatsAppMessageDto(
     [property: JsonPropertyName("from")] string From,
@@ -51,9 +49,7 @@ public sealed record WhatsAppMessageDto(
     [property: JsonPropertyName("audio")] WhatsAppAudioDto? Audio
 );
 
-public sealed record WhatsAppTextDto(
-    [property: JsonPropertyName("body")] string Body
-);
+public sealed record WhatsAppTextDto([property: JsonPropertyName("body")] string Body);
 
 public sealed record WhatsAppAudioDto(
     [property: JsonPropertyName("mime_type")] string MimeType,

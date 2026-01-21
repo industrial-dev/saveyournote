@@ -9,41 +9,49 @@ public static class DomainErrors
     {
         public static readonly Error InvalidMessageId = Error.Validation(
             "Message.InvalidMessageId",
-            "The message ID is invalid or empty");
+            "The message ID is invalid or empty"
+        );
 
         public static readonly Error InvalidSenderId = Error.Validation(
             "Message.InvalidSenderId",
-            "The sender ID is invalid or empty");
+            "The sender ID is invalid or empty"
+        );
 
         public static readonly Error EmptyContent = Error.Validation(
             "Message.EmptyContent",
-            "The message content cannot be empty");
+            "The message content cannot be empty"
+        );
 
         public static readonly Error InvalidTimestamp = Error.Validation(
             "Message.InvalidTimestamp",
-            "The message timestamp is invalid");
+            "The message timestamp is invalid"
+        );
     }
 
     public static class TextContent
     {
         public static readonly Error TooLong = Error.Validation(
             "TextContent.TooLong",
-            "The text content exceeds the maximum allowed length");
+            "The text content exceeds the maximum allowed length"
+        );
 
         public static readonly Error Empty = Error.Validation(
             "TextContent.Empty",
-            "The text content cannot be empty");
+            "The text content cannot be empty"
+        );
     }
 
     public static class AudioContent
     {
         public static readonly Error InvalidMimeType = Error.Validation(
             "AudioContent.InvalidMimeType",
-            "The audio MIME type is invalid");
+            "The audio MIME type is invalid"
+        );
 
         public static readonly Error InvalidAudioId = Error.Validation(
             "AudioContent.InvalidAudioId",
-            "The audio ID is invalid or empty");
+            "The audio ID is invalid or empty"
+        );
     }
 }
 
@@ -81,5 +89,5 @@ public enum ErrorType
     Validation,
     NotFound,
     Conflict,
-    Failure
+    Failure,
 }

@@ -14,7 +14,7 @@ public sealed class Message
     public MessageType Type { get; private set; }
     public MessageSource Source { get; private set; }
     public DateTime Timestamp { get; private set; }
-    
+
     // Content can be either text or audio
     public TextContent? TextContent { get; private set; }
     public AudioContent? AudioContent { get; private set; }
@@ -27,7 +27,8 @@ public sealed class Message
         MessageSource source,
         DateTime timestamp,
         TextContent? textContent,
-        AudioContent? audioContent)
+        AudioContent? audioContent
+    )
     {
         Id = id;
         SenderId = senderId;
@@ -46,7 +47,8 @@ public sealed class Message
         SenderId senderId,
         MessageSource source,
         DateTime timestamp,
-        TextContent textContent)
+        TextContent textContent
+    )
     {
         if (id is null || senderId is null || textContent is null)
         {
@@ -58,14 +60,7 @@ public sealed class Message
             return null;
         }
 
-        return new Message(
-            id,
-            senderId,
-            MessageType.Text,
-            source,
-            timestamp,
-            textContent,
-            null);
+        return new Message(id, senderId, MessageType.Text, source, timestamp, textContent, null);
     }
 
     /// <summary>
@@ -76,7 +71,8 @@ public sealed class Message
         SenderId senderId,
         MessageSource source,
         DateTime timestamp,
-        AudioContent audioContent)
+        AudioContent audioContent
+    )
     {
         if (id is null || senderId is null || audioContent is null)
         {
@@ -88,14 +84,7 @@ public sealed class Message
             return null;
         }
 
-        return new Message(
-            id,
-            senderId,
-            MessageType.Audio,
-            source,
-            timestamp,
-            null,
-            audioContent);
+        return new Message(id, senderId, MessageType.Audio, source, timestamp, null, audioContent);
     }
 
     /// <summary>
@@ -107,7 +96,7 @@ public sealed class Message
         {
             MessageType.Text => TextContent?.Value ?? "[Empty text]",
             MessageType.Audio => AudioContent?.ToString() ?? "[Empty audio]",
-            _ => "[Unknown content type]"
+            _ => "[Unknown content type]",
         };
     }
 
@@ -120,7 +109,7 @@ public sealed class Message
         {
             MessageType.Text => TextContent is not null && AudioContent is null,
             MessageType.Audio => AudioContent is not null && TextContent is null,
-            _ => false
+            _ => false,
         };
     }
 }

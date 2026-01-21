@@ -19,21 +19,21 @@ public sealed class ConsoleMessageLogger : IMessageLogger
         }
 
         var timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        
+
         Console.WriteLine();
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine($"[{timestamp}] Message Received");
         Console.ResetColor();
-        
+
         Console.WriteLine(Separator);
-        
+
         Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine($"Message ID: {message.Id}");
         Console.WriteLine($"Source: {GetSourceDisplay(message.Source)}");
         Console.WriteLine($"From: {message.SenderId}");
         Console.WriteLine($"Type: {message.Type}");
         Console.WriteLine($"Timestamp: {message.Timestamp:yyyy-MM-dd HH:mm:ss} UTC");
-        
+
         if (message.Type == MessageType.Text && message.TextContent is not null)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -49,7 +49,7 @@ public sealed class ConsoleMessageLogger : IMessageLogger
                 Console.WriteLine($"SHA256: {message.AudioContent.Sha256}");
             }
         }
-        
+
         Console.ResetColor();
         Console.WriteLine(Separator);
         Console.WriteLine();
@@ -65,7 +65,7 @@ public sealed class ConsoleMessageLogger : IMessageLogger
             MessageSource.WebApp => "🌐 Web App",
             MessageSource.MobileApp => "📲 Mobile App",
             MessageSource.Api => "🔌 API",
-            _ => source.ToString()
+            _ => source.ToString(),
         };
     }
 }

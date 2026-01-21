@@ -23,5 +23,5 @@ public enum MessageSource
     /// <summary>
     /// Message received directly via API
     /// </summary>
-    Api
+    Api,
 }

@@ -17,5 +17,6 @@ public interface IMessageService
     /// <returns>ErrorOr result containing MessageDto or errors</returns>
     Task<ErrorOr<MessageDto>> ProcessMessageAsync(
         ProcessMessageCommand command,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default
+    );
 }
