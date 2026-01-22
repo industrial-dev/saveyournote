@@ -40,14 +40,61 @@ Facilitar el almacenamiento rápido y organizado de información desde WhatsApp,
 
 ## 🚀 Inicio Rápido
 
-### Requisitos Previos
+### Opción 1: Con Docker (Recomendado)
 
-- Node.js 18+ (para scripts de desarrollo)
-- .NET SDK 10.0
-- Docker y Docker Compose (opcional, para despliegue)
-- Git
+```bash
+# 1. Clonar el repositorio
+git clone <repository-url>
+cd saveyournote
 
-### Instalación
+# 2. Configurar variables de entorno
+cp .env.example .env
+# Edita .env y añade tu NGROK_AUTHTOKEN
+# Obtén tu token en: https://dashboard.ngrok.com/get-started/your-authtoken
+
+# 3. Iniciar con Docker
+./docker.sh start
+
+# 4. Ver la URL de ngrok y configurar webhook en Meta
+./docker.sh url
+```
+
+Ver [DOCKER_GUIDE.md](DOCKER_GUIDE.md) para más detalles.
+
+### Opción 2: Ejecución Local (Sin Docker)
+
+```bash
+# 1. Clonar el repositorio
+git clone <repository-url>
+cd saveyournote
+
+# 2. Instalar dependencias
+dotnet restore
+
+# 3. Ejecutar la API
+cd src/SaveYourNote.Api
+dotnet run
+
+# 4. Abrir Swagger
+open http://localhost:5001
+```
+
+Ver [WHATSAPP_SETUP.md](WHATSAPP_SETUP.md) para configurar ngrok manualmente.
+
+### Configuración de WhatsApp
+
+1. Ve a [Meta for Developers](https://developers.facebook.com/apps/)
+2. Configura el webhook con la URL de ngrok
+3. Prueba enviando un mensaje al número de WhatsApp
+
+---
+
+## 📋 Requisitos Previos
+
+- **Con Docker**: Docker y Docker Compose
+- **Sin Docker**: .NET SDK 10.0
+- Cuenta de [Meta for Developers](https://developers.facebook.com/)
+- Cuenta de [ngrok](https://ngrok.com/) (gratuita)
 
 ```bash
 # 1. Clonar el repositorio
@@ -546,13 +593,11 @@ sequenceDiagram
 ### Pasos de Configuración
 
 1. **Crear cuenta en Meta for Developers**
-
    - Acceder a https://developers.facebook.com/
    - Crear nueva aplicación
    - Seleccionar tipo "Business"
 
 2. **Configurar WhatsApp Business API**
-
    - Agregar producto "WhatsApp"
    - Obtener número de teléfono de prueba
 
@@ -1021,36 +1066,30 @@ docker compose up -d
 #### Medidas de Seguridad Implementadas
 
 1. **Validación de Webhook**
-
    - Verificar firma X-Hub-Signature-256 de WhatsApp en ASP.NET
    - Validar origen de las peticiones
 
 2. **Cifrado de Contraseñas**
-
    - Usar AES-256 con `System.Security.Cryptography`
    - Almacenar clave de cifrado en variable de entorno segura
    - Nunca mostrar contraseñas en logs
 
 3. **Autenticación de Servicios**
-
    - OAuth 2.0 para Google Sheets con Service Account
    - Credenciales montadas como volumen de solo lectura
    - Comunicación interna entre contenedores (red privada de Docker)
 
 4. **Privacidad de Datos**
-
    - Procesamiento 100% local (audio y texto no salen del servidor)
    - Modelos de IA ejecutándose localmente
    - Sin llamadas a APIs externas de IA
 
 5. **HTTPS y Reverse Proxy**
-
    - Caddy gestiona automáticamente certificados SSL (Let's Encrypt)
    - Todo el tráfico cifrado
    - Headers de seguridad configurados
 
 6. **Límites y Rate Limiting**
-
    - Middleware de rate limiting en ASP.NET Core
    - Máximo de mensajes por usuario/día
    - Tamaño máximo de archivos de audio (16 MB)
@@ -1116,36 +1155,30 @@ ENCRYPTION_KEY=your_encryption_key_for_passwords_min_32_chars
 #### Medidas de Seguridad Implementadas
 
 1. **Validación de Webhook**
-
    - Verificar firma X-Hub-Signature-256 de WhatsApp en ASP.NET
    - Validar origen de las peticiones
 
 2. **Cifrado de Contraseñas**
-
    - Usar AES-256 con `System.Security.Cryptography`
    - Almacenar clave de cifrado en variable de entorno segura
    - Nunca mostrar contraseñas en logs
 
 3. **Autenticación de Servicios**
-
    - OAuth 2.0 para Google Sheets con Service Account
    - Credenciales montadas como volumen de solo lectura
    - Comunicación interna entre contenedores (red privada de Docker)
 
 4. **Privacidad de Datos**
-
    - Procesamiento 100% local (audio y texto no salen del servidor)
    - Modelos de IA ejecutándose localmente
    - Sin llamadas a APIs externas de IA
 
 5. **HTTPS y Reverse Proxy**
-
    - Caddy gestiona automáticamente certificados SSL (Let's Encrypt)
    - Todo el tráfico cifrado
    - Headers de seguridad configurados
 
 6. **Límites y Rate Limiting**
-
    - Middleware de rate limiting en ASP.NET Core
    - Máximo de mensajes por usuario/día
    - Tamaño máximo de archivos de audio (16 MB)
@@ -1190,24 +1223,20 @@ ENCRYPTION_KEY=your_encryption_key_for_passwords_min_32_chars
 #### Medidas de Seguridad Implementadas
 
 1. **Validación de Webhook**
-
    - Verificar firma X-Hub-Signature de WhatsApp
    - Validar origen de las peticiones
 
 2. **Cifrado de Contraseñas**
-
    - Usar AES-256 para cifrar contraseñas
    - Almacenar clave de cifrado en variable de entorno segura
    - Nunca mostrar contraseñas en logs
 
 3. **Autenticación de Servicios**
-
    - OAuth 2.0 para Google Sheets
    - API Keys seguras para Gemini y transcripción
    - Rotación periódica de tokens
 
 4. **Límites y Rate Limiting**
-
    - Máximo de mensajes por usuario/día
    - Tamaño máximo de archivos de audio
    - Timeout en procesamiento de IA
