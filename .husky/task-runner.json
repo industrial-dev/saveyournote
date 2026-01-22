@@ -9,6 +9,13 @@
       "include": ["**/*.cs"]
     },
     {
+      "name": "restore",
+      "group": "pre-commit",
+      "command": "dotnet",
+      "args": ["restore"],
+      "include": ["**/*.csproj"]
+    },
+    {
       "name": "build",
       "group": "pre-commit",
       "command": "dotnet",
