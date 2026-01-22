@@ -1,0 +1,60 @@
+services:
+  # API de SaveYourNote
+  api:
+    build:
+      context: .
+      dockerfile: src/SaveYourNote.Api/Dockerfile
+      target: development
+    container_name: saveyournote-api
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
+      - ASPNETCORE_URLS=http://+:5001
+      - WhatsApp__VerifyToken=${WHATSAPP_VERIFY_TOKEN}
+      - WhatsApp__AccessToken=${WHATSAPP_ACCESS_TOKEN}
+      - WhatsApp__PhoneNumberId=${WHATSAPP_PHONE_NUMBER_ID}
+      - WhatsApp__ApiVersion=${WHATSAPP_API_VERSION:-v22.0}
+      - WhatsApp__AppSecret=${WHATSAPP_APP_SECRET:-}
+    volumes:
+      # Montar código fuente para hot reload en desarrollo
+      - ./src:/app/src:delegated
+      - ./SaveYourNote.sln:/app/SaveYourNote.sln
+      # Volúmenes para cache de build
+      - api-nuget:/root/.nuget/packages
+    networks:
+      - saveyournote-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ngrok para exponer la API (SOLO DESARROLLO)
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: saveyournote-ngrok
+    command:
+      - "http"
+      - "api:5001"
+      - "--log=stdout"
+    ports:
+      - "4040:4040"  # Panel web de ngrok
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    networks:
+      - saveyournote-network
+    depends_on:
+      - api
+    restart: unless-stopped
+    profiles:
+      - development  # Solo se ejecuta en modo desarrollo
+
+networks:
+  saveyournote-network:
+    driver: bridge
+
+volumes:
+  api-nuget:
