@@ -36,6 +36,14 @@ show_url() {
         return
     fi
     sleep 5
+    echo ""
+    success "SaveYourNote iniciado"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "📱 API Local: http://localhost:5001"
+    echo "📚 Swagger: http://localhost:5001/swagger"
+    echo "❤️  Health: http://localhost:5001/health"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    
     if command -v jq >/dev/null 2>&1; then
         URL=$(curl -s http://localhost:4040/api/tunnels 2>/dev/null | jq -r '.tunnels[0].public_url // empty')
     else
@@ -45,11 +53,11 @@ show_url() {
     if [ -n "$URL" ]; then
         echo ""
         success "ngrok corriendo"
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo "URL: $URL"
-        echo "Webhook: ${URL}/api/whatsapp/webhook"
-        echo "Panel: http://localhost:4040"
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo "🌐 URL Pública: $URL"
+        echo "🪝 Webhook: ${URL}/api/whatsapp/webhook"
+        echo "🎛️  Panel ngrok: http://localhost:4040"
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     fi
 }
 
