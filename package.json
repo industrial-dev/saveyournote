@@ -1,0 +1,28 @@
+{
+  "name": "saveyournote",
+  "version": "1.0.0",
+  "description": "SaveYourNote API - Audio transcription service",
+  "scripts": {
+    "docker:start": "node docker.js start",
+    "docker:stop": "node docker.js stop",
+    "docker:logs": "node docker.js logs",
+    "docker:status": "node docker.js status",
+    "docker:url": "node docker.js url",
+    "docker:prod": "node docker.js start prod",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "transcription",
+    "whatsapp",
+    "whisper",
+    "dotnet"
+  ],
+  "author": "SaveYourNote Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "husky": "^9.1.7"
+  }
+}
