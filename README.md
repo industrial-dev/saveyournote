@@ -58,8 +58,6 @@ node docker.js start
 node docker.js url
 ```
 
-Ver [DOCKER_GUIDE.md](DOCKER_GUIDE.md) para más detalles.
-
 ### Opción 2: Ejecución Local (Sin Docker)
 
 ```bash
