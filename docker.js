@@ -4,9 +4,8 @@
  * Script multiplataforma para gestionar los servicios de Docker
  */
 
-const { spawn, execSync } = require('child_process');
+const { spawn } = require('child_process');
 const { existsSync, copyFileSync, readFileSync } = require('fs');
-const { join } = require('path');
 
 // Colores para la consola
 const colors = {

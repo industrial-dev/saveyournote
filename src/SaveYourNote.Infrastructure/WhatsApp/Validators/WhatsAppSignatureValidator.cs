@@ -45,6 +45,9 @@ public static class WhatsAppSignatureValidator
             ? signature[7..]
             : signature;
 
+        // Normalize: trim whitespace and convert to lowercase for consistent comparison
+        signatureValue = signatureValue.Trim().ToLowerInvariant();
+
         // Compute HMAC-SHA256
         var expectedSignature = ComputeHmacSha256(payload, appSecret);
 

@@ -190,12 +190,37 @@ public class WhatsAppWebhookController : ControllerBase
             var rawBody = await reader.ReadToEndAsync();
             Request.Body.Position = 0;
 
-            // Validate signature (optional in development, required in production)
+            // Validate signature (required in production, optional in development)
             var signature = Request.Headers["X-Hub-Signature-256"].FirstOrDefault();
             var appSecret = _configuration["WhatsApp:AppSecret"];
 
-            if (!string.IsNullOrWhiteSpace(appSecret))
+            if (_environment.IsDevelopment())
             {
+                // In development, skip signature validation if app secret is not configured
+                if (string.IsNullOrWhiteSpace(appSecret))
+                {
+                    _logger.LogWarning(
+                        "AppSecret is not configured, skipping signature validation"
+                    );
+                }
+            }
+            else
+            {
+                // In production, ensure app secret is configured
+                if (string.IsNullOrWhiteSpace(appSecret))
+                {
+                    _logger.LogError("WhatsApp app secret is not configured");
+                    return StatusCode(
+                        500,
+                        new ApiErrorResponse
+                        {
+                            Error = "Server configuration error",
+                            Details = "WhatsApp app secret is not configured",
+                        }
+                    );
+                }
+
+                // Validate signature
                 var validationResult = WhatsAppSignatureValidator.ValidateSignature(
                     rawBody,
                     signature,

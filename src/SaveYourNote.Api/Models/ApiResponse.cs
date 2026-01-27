@@ -27,7 +27,7 @@ public class ApiResponse<T>
     /// Timestamp of the response
     /// </summary>
     /// <example>2026-01-26T10:30:00Z</example>
-    public DateTime Timestamp { get; set; }
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 }
 
 /// <summary>
