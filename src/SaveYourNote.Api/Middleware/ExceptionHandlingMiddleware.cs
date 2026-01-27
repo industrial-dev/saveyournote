@@ -43,7 +43,9 @@ public class ExceptionHandlingMiddleware
         {
             status = "error",
             message = "An internal server error occurred",
-            details = exception.Message,
+            details = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development"
+                ? exception.Message
+                : null,
             timestamp = DateTime.UtcNow,
         };
 

@@ -28,11 +28,22 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddCorsConfiguration(this IServiceCollection services)
     {
+        // TODO: Update CORS policy as per your requirements
+        /*
+        CORS is configured with AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(),
+        which effectively disables browser cross-origin protections for all callers.
+        If this API will be exposed beyond local development,
+        restrict origins/headers/methods via configuration (e.g., an allowlist)
+        and consider separate policies per environment.
+        */
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(builder =>
             {
-                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                builder
+                    .WithOrigins("https://your-allowed-origin.com") // Replace with your allowed origin
+                    .WithMethods("GET", "POST") // Specify allowed methods
+                    .WithHeaders("Content-Type", "Authorization"); // Specify allowed headers
             });
         });
 

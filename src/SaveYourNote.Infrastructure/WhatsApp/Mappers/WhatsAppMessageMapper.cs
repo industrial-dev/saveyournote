@@ -49,6 +49,12 @@ public static class WhatsAppMessageMapper
 
         var timestamp = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp).UtcDateTime;
 
+        // Validate message type
+        if (string.IsNullOrWhiteSpace(whatsAppMessage.Type))
+        {
+            return Error.Validation("WhatsApp.NoType", "Message type is missing or empty");
+        }
+
         // Map based on message type
         return whatsAppMessage.Type.ToLowerInvariant() switch
         {
