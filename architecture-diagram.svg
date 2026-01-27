@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <!-- Define styles -->
+  <defs>
+    <style>
+      .box { fill: #ffffff; stroke: #2563eb; stroke-width: 2; }
+      .title { fill: #1e40af; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; text-anchor: middle; }
+      .subtitle { fill: #64748b; font-family: Arial, sans-serif; font-size: 12px; text-anchor: middle; }
+      .arrow { stroke: #2563eb; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-label { fill: #475569; font-family: Arial, sans-serif; font-size: 11px; text-anchor: middle; }
+      .external { fill: #f1f5f9; stroke: #64748b; stroke-width: 2; stroke-dasharray: 5,5; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#2563eb" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="30" style="fill: #1e3a8a; font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; text-anchor: middle;">
+    SaveYourNote - Arquitectura del Sistema
+  </text>
+
+  <!-- WhatsApp / META -->
+  <rect x="50" y="80" width="140" height="80" class="external" rx="5"/>
+  <text x="120" y="110" class="title">WhatsApp</text>
+  <text x="120" y="130" class="subtitle">(META)</text>
+  <text x="120" y="145" class="subtitle">Mensajes de voz</text>
+
+  <!-- Frontend Web -->
+  <rect x="610" y="80" width="140" height="80" class="external" rx="5"/>
+  <text x="680" y="110" class="title">Frontend Web</text>
+  <text x="680" y="130" class="subtitle">Chat Interface</text>
+  <text x="680" y="145" class="subtitle">Notas de audio</text>
+
+  <!-- API Pública -->
+  <rect x="300" y="220" width="200" height="100" class="box" rx="5"/>
+  <text x="400" y="250" class="title">API Pública</text>
+  <text x="400" y="270" class="subtitle">Endpoints:</text>
+  <text x="400" y="287" class="subtitle">• POST /webhook (META)</text>
+  <text x="400" y="304" class="subtitle">• POST /api/notes</text>
+
+  <!-- Aplicación Principal -->
+  <rect x="280" y="380" width="240" height="100" class="box" rx="5"/>
+  <text x="400" y="410" class="title">Aplicación</text>
+  <text x="400" y="430" class="subtitle">Procesamiento de audio</text>
+  <text x="400" y="447" class="subtitle">Gestión de transcripciones</text>
+  <text x="400" y="464" class="subtitle">Almacenamiento de notas</text>
+
+  <!-- Whisper API -->
+  <rect x="300" y="520" width="200" height="60" class="external" rx="5"/>
+  <text x="400" y="545" class="title">Whisper API</text>
+  <text x="400" y="563" class="subtitle">Transcripción de audio</text>
+
+  <!-- Arrows -->
+  <!-- WhatsApp to API -->
+  <path d="M 190 120 L 300 260" class="arrow"/>
+  <text x="235" y="180" class="arrow-label">Audio</text>
+  <text x="235" y="193" class="arrow-label">Messages</text>
+
+  <!-- Frontend to API -->
+  <path d="M 610 120 L 500 260" class="arrow"/>
+  <text x="565" y="180" class="arrow-label">HTTP</text>
+  <text x="565" y="193" class="arrow-label">Requests</text>
+
+  <!-- API to Application -->
+  <path d="M 400 320 L 400 380" class="arrow"/>
+  <text x="445" y="355" class="arrow-label">Procesar audio</text>
+
+  <!-- Application to Whisper -->
+  <path d="M 400 480 L 400 520" class="arrow"/>
+  <text x="445" y="505" class="arrow-label">Transcribir</text>
+
+  <!-- Whisper to Application (response) -->
+  <path d="M 380 520 L 380 480" class="arrow"/>
+  <text x="335" y="505" class="arrow-label">Texto</text>
+
+  <!-- Application to API (response) -->
+  <path d="M 380 380 L 380 320" class="arrow"/>
+  <text x="335" y="355" class="arrow-label">Respuesta</text>
+
+  <!-- API to Frontend (response) -->
+  <path d="M 500 280 L 610 140" class="arrow"/>
+  <text x="550" y="225" class="arrow-label">Transcripción</text>
+
+  <!-- API to WhatsApp (response) -->
+  <path d="M 300 280 L 190 140" class="arrow"/>
+  <text x="255" y="225" class="arrow-label">Transcripción</text>
+
+</svg>
