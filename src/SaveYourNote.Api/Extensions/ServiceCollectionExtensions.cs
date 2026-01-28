@@ -1,6 +1,5 @@
 using SaveYourNote.Application.Interfaces;
 using SaveYourNote.Application.UseCases.ProcessMessage;
-using SaveYourNote.Infrastructure.Logging;
 
 namespace SaveYourNote.Api.Extensions;
 
@@ -17,9 +16,6 @@ public static class ServiceCollectionExtensions
         // Register application services
         services.AddScoped<IMessageService, ProcessMessageHandler>();
 
-        // Register infrastructure services
-        services.AddSingleton<IMessageLogger, ConsoleMessageLogger>();
-
         return services;
     }
 
@@ -28,22 +24,38 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddCorsConfiguration(this IServiceCollection services)
     {
-        // TODO: Update CORS policy as per your requirements
         /*
-        CORS is configured with AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(),
-        which effectively disables browser cross-origin protections for all callers.
-        If this API will be exposed beyond local development,
-        restrict origins/headers/methods via configuration (e.g., an allowlist)
-        and consider separate policies per environment.
+        CORS applies only to browser-based requests. Server-to-server calls (e.g.,
+        WhatsApp/Meta webhooks) are not subject to CORS, so they do NOT need to be
+        listed here. We therefore scope CORS to local development tools (e.g.,
+        Swagger UI, REST clients running in the browser) and leave other origins
+        blocked by default.
+
+        If you later expose a web client, add its origin to the allowlist below
+        or move the list to configuration (appsettings.json) per environment.
         */
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(builder =>
             {
                 builder
-                    .WithOrigins("https://your-allowed-origin.com") // Replace with your allowed origin
-                    .WithMethods("GET", "POST") // Specify allowed methods
-                    .WithHeaders("Content-Type", "Authorization"); // Specify allowed headers
+                    // Allow localhost origins with any port (HTTP/HTTPS)
+                    .SetIsOriginAllowed(origin =>
+                    {
+                        if (!Uri.TryCreate(origin, UriKind.Absolute, out var uri))
+                        {
+                            return false;
+                        }
+
+                        return uri.Host.Equals("localhost", StringComparison.OrdinalIgnoreCase)
+                            || uri.Host.Equals("127.0.0.1", StringComparison.OrdinalIgnoreCase);
+                    })
+                    // Allow typical HTTP verbs used by local tooling
+                    .WithMethods("GET", "POST")
+                    // Allow common headers sent by local tools and browsers
+                    .WithHeaders("Content-Type", "Authorization", "X-Requested-With")
+                    // If you use cookies or auth headers from a browser, keep this enabled
+                    .AllowCredentials();
             });
         });
 

@@ -1,4 +1,5 @@
 using ErrorOr;
+using Microsoft.Extensions.Logging;
 using SaveYourNote.Application.DTOs;
 using SaveYourNote.Application.Errors;
 using SaveYourNote.Application.Interfaces;
@@ -14,11 +15,11 @@ namespace SaveYourNote.Application.UseCases.ProcessMessage;
 /// </summary>
 public sealed class ProcessMessageHandler : IMessageService
 {
-    private readonly IMessageLogger _messageLogger;
+    private readonly ILogger<ProcessMessageHandler> _logger;
 
-    public ProcessMessageHandler(IMessageLogger messageLogger)
+    public ProcessMessageHandler(ILogger<ProcessMessageHandler> logger)
     {
-        _messageLogger = messageLogger ?? throw new ArgumentNullException(nameof(messageLogger));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     /// <summary>
@@ -29,38 +30,53 @@ public sealed class ProcessMessageHandler : IMessageService
         CancellationToken cancellationToken = default
     )
     {
-        // 1. Validate command
         if (command is null)
         {
             return ApplicationErrors.Message.InvalidCommand;
         }
 
-        // 2. Create domain entity from command
         var messageResult = CreateMessageFromCommand(command);
         if (messageResult is null)
         {
             return ApplicationErrors.Message.CreationFailed;
         }
 
-        // 3. Validate message
         if (!messageResult.IsValid())
         {
             return ApplicationErrors.Message.InvalidCommand;
         }
 
-        // 4. Log message to console
-        try
-        {
-            await _messageLogger.LogMessageAsync(messageResult, cancellationToken);
-        }
-        catch (Exception)
-        {
-            return ApplicationErrors.Message.LoggingFailed;
-        }
+        LogMessageReceived(messageResult);
 
-        // 5. Map to DTO and return success
         var dto = MapToDto(messageResult);
         return dto;
+    }
+
+    private void LogMessageReceived(Message message)
+    {
+        var contentDisplay =
+            message.Type == MessageType.Text
+                ? message.TextContent?.Value ?? "[Empty]"
+                : $"Audio: {message.AudioContent?.AudioId}";
+
+        _logger.LogInformation(
+            "📨 Message Received - ID: {MessageId}, Source: {Source}, From: {SenderId}, Type: {MessageType}, Content: {Content}, Timestamp: {Timestamp:yyyy-MM-dd HH:mm:ss}",
+            message.Id.Value,
+            message.Source,
+            message.SenderId.Value,
+            message.Type,
+            contentDisplay,
+            message.Timestamp
+        );
+
+        if (message.Type == MessageType.Audio && message.AudioContent is not null)
+        {
+            _logger.LogDebug(
+                "🎵 Audio Details - MimeType: {MimeType}, SHA256: {Sha256}",
+                message.AudioContent.MimeType,
+                message.AudioContent.Sha256
+            );
+        }
     }
 
     private static Message? CreateMessageFromCommand(ProcessMessageCommand command)
@@ -114,7 +130,7 @@ public sealed class ProcessMessageHandler : IMessageService
         }
 
         var audioContent = AudioContent.Create(
-            command.Content, // Content is the audio ID for audio messages
+            command.Content,
             command.AudioMimeType,
             command.AudioSha256
         );

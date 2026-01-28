@@ -24,7 +24,7 @@ public sealed record MessageId
             return null;
         }
 
-        if (value.Length > 500) // Reasonable max length for message IDs
+        if (value.Length > 500)
         {
             return null;
         }

@@ -8,9 +8,14 @@ services:
     container_name: saveyournote-api
     ports:
       - "5001:5001"
+    tty: true
+    stdin_open: true
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
       - ASPNETCORE_URLS=http://+:5001
+      - DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION=true
+      - TERM=xterm-256color
+      - COLORTERM=truecolor
       - WhatsApp__VerifyToken=${WHATSAPP_VERIFY_TOKEN}
       - WhatsApp__AccessToken=${WHATSAPP_ACCESS_TOKEN}
       - WhatsApp__PhoneNumberId=${WHATSAPP_PHONE_NUMBER_ID}
