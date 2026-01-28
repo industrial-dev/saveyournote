@@ -60,13 +60,7 @@ public sealed class ProcessMessageHandler : IMessageService
                 : $"Audio: {message.AudioContent?.AudioId}";
 
         _logger.LogInformation(
-            "📨 Message Received\n"
-                + "   ID: {MessageId}\n"
-                + "   Source: {Source}\n"
-                + "   From: {SenderId}\n"
-                + "   Type: {MessageType}\n"
-                + "   Content: {Content}\n"
-                + "   Timestamp: {Timestamp:yyyy-MM-dd HH:mm:ss}",
+            "📨 Message Received - ID: {MessageId}, Source: {Source}, From: {SenderId}, Type: {MessageType}, Content: {Content}, Timestamp: {Timestamp:yyyy-MM-dd HH:mm:ss}",
             message.Id.Value,
             message.Source,
             message.SenderId.Value,
@@ -78,7 +72,7 @@ public sealed class ProcessMessageHandler : IMessageService
         if (message.Type == MessageType.Audio && message.AudioContent is not null)
         {
             _logger.LogDebug(
-                "🎵 Audio Details\n" + "   MimeType: {MimeType}\n" + "   SHA256: {Sha256}",
+                "🎵 Audio Details - MimeType: {MimeType}, SHA256: {Sha256}",
                 message.AudioContent.MimeType,
                 message.AudioContent.Sha256
             );
