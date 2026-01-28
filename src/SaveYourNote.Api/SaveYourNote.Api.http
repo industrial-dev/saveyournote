@@ -1,6 +1,149 @@
-@SaveYourNote_Api_HostAddress = http://localhost:5004
+@SaveYourNote_Api_HostAddress = http://localhost:5001
+@Hub_Verify_Token = XeayHm6I49BYu6DRWcjkJYmEgAdvKl02eWcPmgkK0hqJAuzqPtFksHRH1g8kap54
 
-GET {{SaveYourNote_Api_HostAddress}}/weatherforecast/
+
+# WhatsApp Webhook Verification
+GET {{SaveYourNote_Api_HostAddress}}/api/whatsapp/webhook?hub.mode=subscribe&hub.verify_token={{Hub_Verify_Token}}&hub.challenge=test_challenge_string
 Accept: application/json
+
+###
+
+# WhatsApp Text Message - Recordatorio simple
+POST {{SaveYourNote_Api_HostAddress}}/api/whatsapp/webhook
+Content-Type: application/json
+
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "123456789",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "15551234567",
+              "phone_number_id": "987654321"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "Juan Pérez"
+                },
+                "wa_id": "34612345678"
+              }
+            ],
+            "messages": [
+              {
+                "from": "34612345678",
+                "id": "wamid.HBgNMTIzNDU2Nzg5MDEVAgAR",
+                "timestamp": "1706400000",
+                "type": "text",
+                "text": {
+                  "body": "Recordar comprar leche y pan para mañana"
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}
+
+###
+
+# WhatsApp Text Message - Nota de reunión
+POST {{SaveYourNote_Api_HostAddress}}/api/whatsapp/webhook
+Content-Type: application/json
+
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "123456789",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "15551234567",
+              "phone_number_id": "987654321"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "María González"
+                },
+                "wa_id": "34687654321"
+              }
+            ],
+            "messages": [
+              {
+                "from": "34687654321",
+                "id": "wamid.HBgNMTIzNDU2Nzg5MDIVAgAS",
+                "timestamp": "1706400120",
+                "type": "text",
+                "text": {
+                  "body": "Reunión con cliente el lunes a las 10:00. Preparar presentación del proyecto y presupuesto"
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}
+
+###
+
+# WhatsApp Audio Message - Nota de voz
+POST {{SaveYourNote_Api_HostAddress}}/api/whatsapp/webhook
+Content-Type: application/json
+
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "123456789",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "15551234567",
+              "phone_number_id": "987654321"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "Carlos Rodríguez"
+                },
+                "wa_id": "34698765432"
+              }
+            ],
+            "messages": [
+              {
+                "from": "34698765432",
+                "id": "wamid.HBgNMTIzNDU2Nzg5MDMVAgAT",
+                "timestamp": "1706400240",
+                "type": "audio",
+                "audio": {
+                  "mime_type": "audio/ogg; codecs=opus",
+                  "sha256": "abc123def456",
+                  "id": "audio_message_id_12345"
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}
 
 ###
