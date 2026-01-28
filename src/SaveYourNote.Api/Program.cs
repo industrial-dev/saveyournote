@@ -2,18 +2,14 @@ using SaveYourNote.Api.Extensions;
 using SaveYourNote.Api.Middleware;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.SystemConsole.Themes;
 
 // Configure Serilog with two-stage initialization
 Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
     .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
     .MinimumLevel.Override("System", LogEventLevel.Warning)
     .Enrich.FromLogContext()
-    .WriteTo.Console(
-        theme: AnsiConsoleTheme.Code,
-        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
-    )
     .CreateBootstrapLogger();
 
 try
